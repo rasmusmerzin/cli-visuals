@@ -29,6 +29,9 @@ def draw_line():
             if i %40 == 0: time.sleep(.03)
 
 
+print("initializing..")
+time.sleep(1)
+
 screen_size = get_screen_size()
 screen_size[0] -= 1
 screen_size[1] -= 1
@@ -38,3 +41,4 @@ clear()
 
 while 1:
     draw_line()
+
