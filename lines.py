@@ -16,6 +16,7 @@ def clear():
 def draw_line():
     screen_size = get_screen_size()
     screen_size[0] -= 1
+    screen_size[1] -= 1
 
     c = "\033[" +str(random.randint(31, 37)) +"m"
     h = random.randint(1, screen_size[0] +screen_size[1] -2)
@@ -28,7 +29,7 @@ def draw_line():
             if i %8 == 0: time.sleep(.03)
     else:
         for i in range(1, screen_size[1] +1):
-            draw(c +"-\033[0m", (h, dir == 1 and i or (screen_size[1] -i +1)))
+            draw(c +"%\033[0m", (h, dir == 1 and i or (screen_size[1] -i +1)))
             if i %40 == 0: time.sleep(.03)
 
 
