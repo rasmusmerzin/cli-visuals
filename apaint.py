@@ -4,10 +4,12 @@ import curses, traceback
 import os, time
 
 
+lt = time.localtime(time.time())
+timemark = "{0}-{1}-{2}_{3}-{4}-{5}".format(lt.tm_year, lt.tm_mon, lt.tm_mday, lt.tm_hour, lt.tm_min, lt.tm_sec)
 
 
 def main(scr):
-    global y, x, autopush, content
+    global y, x, autopush, content, bar_title, running, timemark
 
     curses.start_color()
     curses.use_default_colors()
@@ -17,6 +19,7 @@ def main(scr):
     mode, scheme = 0, 0
     bar_title = [""]
     autopush = ""
+    running = 1
 
     content = {}
     
@@ -28,11 +31,11 @@ def main(scr):
 
     def update_bar_title(title="", bold=0):
         bar_title = [title, bold]
-        add_bar_text(0, ("{:" +str(scr.getmaxyx()[1] -24) +"s}").format(title)[:scr.getmaxyx()[1] -20], bold and curses.A_BOLD)
+        add_bar_text(0, ("{:" +str(scr.getmaxyx()[1] -24) +"s}").format(title)[:scr.getmaxyx()[1] -24], bold and curses.A_BOLD)
 
     def update_bar_info():
         update_bar_title(*bar_title)
-        add_bar_text(scr.getmaxyx()[1] -20, str(y) +"," +str(x))
+        add_bar_text(scr.getmaxyx()[1] -20, ("{:18s}").format(str(y) +"," +str(x))[:18])
         add_bar_text(scr.getmaxyx()[1] -2, "#", curses.color_pair(scheme))
 
 
@@ -41,17 +44,40 @@ def main(scr):
         y = mode == -1 and (scr.getmaxyx()[0] -1) or min(max(y, 0), scr.getmaxyx()[0] -2)
         x = min(max(x, 0), scr.getmaxyx()[1] -2)
 
+    def write_to_file(file_name="autosave_" +timemark +".txt"):
+        text = ""
+        brks = 0
+        for y in range(scr.getmaxyx()[0] -1):
+            if y in content:
+                text += "\n" *brks +content[y].rstrip()
+                brks = 0
+            brks += 1
+        bar_title = ["write to " +file_name]
+        with open(file_name, "w") as f: f.write(text)
+
+    def load_from_file(file_name):
+        with open(file_name, "r") as f: scr.addstr(1, 1, f.read())
+
     def execute(*cmd):
-        global autopush
+        global autopush, running, bar_title
         if cmd[0] == "autopush":
             if len(cmd) > 1: autopush = cmd[1]
-            else: bar_title = [cmd[0] +": direction (D|U|L|R|-) required"]
-        else: bar_title = [cmd[0] +": no such command"]
+            else: bar_title[0] = cmd[0] +": direction (D|U|L|R|-) required"
+        elif cmd[0] == "q!": running = 0
+        elif cmd[0] == "w" or cmd[0] == "write" or cmd[0] == "wq":
+            if len(cmd) > 1: write_to_file(cmd[1])
+            else: write_to_file()
+            if cmd[0] == "wq": running = 0
+        elif cmd[0] == "l" or cmd[0] == "load":
+            if len(cmd) > 1: load_from_file(cmd[1])
+            else: bar_title[0] = cmd[0] +": file name required"
+        elif cmd[0] == "q" or cmd[0] == "exit" or cmd[0] == "quit": bar_title[0] = "use 'q!' or 'wq'"
+        else: bar_title[0] = "no command '{0}'".format(cmd[0])
 
     update_bar_info()
 
 
-    while 1:
+    while running:
         scr.move(y, x)
         c = scr.getch()
 
@@ -106,9 +132,10 @@ def main(scr):
                 bar_title[0] += chr(c)
                 x += 1
             elif c == 263:
-                bar_title[0] = bar_title[0][:-1]
-                x -= 1
-            elif c == 10: #or c == <numpad_enter>
+                if len(bar_title[0]) > 1:
+                    bar_title[0] = bar_title[0][:-1]
+                    x -= 1
+            elif c == 10: #ADD: or c == <numpad_enter>
                 cmd = bar_title[0][1:]
                 bar_title[0] = ">" +cmd
                 execute(*cmd.lower().split())
