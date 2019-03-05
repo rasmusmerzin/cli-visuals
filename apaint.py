@@ -85,7 +85,7 @@ def main(scr):
                 if y in content: content[y] = ("{:" +str(w) +"s}").format(content[y])[:w]
                 else: content[y] = " " *w
                 for x in range(w):
-                    scr.addstr(y +1, x +1, content[y][x], curses.color_pair(int(txt[x].strip() or 0)))
+                    scr.addstr(y, x, content[y][x], curses.color_pair(int(txt[x].strip() or 0)))
                 colortable[y] = txt
 
         if file_name.lower()[-11:] == ".colortable":
@@ -97,7 +97,7 @@ def main(scr):
                     txt = " " *w
                     if len(lines) > y:
                         txt = ("{:" +str(w) +"s}").format(lines[y])[:w]
-                    scr.addstr(y +1, 1, txt)
+                    scr.addstr(y, 0, txt)
                     content[y] = txt
             try:
                 with open(file_name +".colortable", "r") as f: colorize(f)
@@ -117,7 +117,7 @@ def main(scr):
         elif cmd[0] == "q!": running = 0
         elif cmd[0] == "clear!":
             content, colortable = {}, {}
-            scr.addstr(1, 1, ("\n" +" " *(scr.getmaxyx()[1] -2)) *(scr.getmaxyx()[0] -2))
+            scr.addstr(0, 0, ("\n" +" " *(scr.getmaxyx()[1] -1)) *(scr.getmaxyx()[0] -1))
         elif cmd[0] == "w" or cmd[0] == "write" or cmd[0] == "wq":
             if len(cmd) > 1: write_to_file(cmd[1])
             else: write_to_file()
@@ -178,7 +178,7 @@ def main(scr):
                 for i in [content, colortable]:
                     txt = y in i and i[y] or ""
                     prev = txt[:scr.getmaxyx()[1] -2] +(" " *(scr.getmaxyx()[1] -2 -len(txt)))
-                    i[y] = prev[:x] +byt +prev[x +1]
+                    i[y] = prev[:x] +byt +(len(prev) > x +1 and prev[x +1] or "")
                     byt = str(scheme == 0 and " " or scheme)
 
                 scr.addstr(y, x, char, curses.color_pair(scheme))
