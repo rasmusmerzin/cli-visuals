@@ -9,7 +9,7 @@ timemark = "{0}-{1}-{2}_{3}-{4}-{5}".format(lt.tm_year, lt.tm_mon, lt.tm_mday, l
 
 
 def main(scr):
-    global y, x, autopush, content, bar_title, running, timemark
+    global y, x, autopush, content, bar_title, running, timemark, status
 
     curses.start_color()
     curses.use_default_colors()
@@ -20,6 +20,7 @@ def main(scr):
     bar_title = [""]
     autopush = ""
     running = 1
+    status = 1
 
     content = {}
     
@@ -34,9 +35,13 @@ def main(scr):
         add_bar_text(0, ("{:" +str(scr.getmaxyx()[1] -24) +"s}").format(title)[:scr.getmaxyx()[1] -24], bold and curses.A_BOLD)
 
     def update_bar_info():
+        global status
         update_bar_title(*bar_title)
-        add_bar_text(scr.getmaxyx()[1] -20, ("{:18s}").format(str(y) +"," +str(x))[:18])
-        add_bar_text(scr.getmaxyx()[1] -2, "#", curses.color_pair(scheme))
+        if status:
+            add_bar_text(scr.getmaxyx()[1] -20, ("{:18s}").format(str(y) +"," +str(x))[:18])
+            add_bar_text(scr.getmaxyx()[1] -2, "#", curses.color_pair(scheme))
+        else:
+            add_bar_text(scr.getmaxyx()[1] -20, " " *19)
 
 
     def check_bounds():
@@ -59,10 +64,15 @@ def main(scr):
         with open(file_name, "r") as f: scr.addstr(1, 1, f.read())
 
     def execute(*cmd):
-        global autopush, running, bar_title
+        global autopush, running, bar_title, status
         if cmd[0] == "autopush":
             if len(cmd) > 1: autopush = cmd[1]
             else: bar_title[0] = cmd[0] +": direction (D|U|L|R|-) required"
+        elif cmd[0] == "status":
+            status = 1 -status
+            if not status:
+                time.sleep(.1)
+                bar_title[0] = ""
         elif cmd[0] == "q!": running = 0
         elif cmd[0] == "w" or cmd[0] == "write" or cmd[0] == "wq":
             if len(cmd) > 1: write_to_file(cmd[1])
