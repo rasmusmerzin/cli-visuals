@@ -9,7 +9,7 @@ timemark = "{0}-{1}-{2}_{3}-{4}-{5}".format(lt.tm_year, lt.tm_mon, lt.tm_mday, l
 
 
 def main(scr):
-    global y, x, autopush, content, bar_title, running, timemark, status
+    global y, x, autopush, content, colortable, bar_title, running, timemark, status
 
     curses.start_color()
     curses.use_default_colors()
@@ -23,6 +23,7 @@ def main(scr):
     status = 1
 
     content = {}
+    colortable = {}
     
 
     for i in range(7): curses.init_pair(i, i, -1)
@@ -50,21 +51,61 @@ def main(scr):
         x = min(max(x, 0), scr.getmaxyx()[1] -2)
 
     def write_to_file(file_name="autosave_" +timemark +".txt"):
-        text = ""
-        brks = 0
-        for y in range(scr.getmaxyx()[0] -1):
-            if y in content:
-                text += "\n" *brks +content[y].rstrip()
-                brks = 0
-            brks += 1
-        bar_title = ["write to " +file_name]
-        with open(file_name, "w") as f: f.write(text)
+        text = [""] *2
+        for i in range(2):
+            mp = [content, colortable][i]
+            brks = 0
+            for y in range(scr.getmaxyx()[0] -1):
+                if y in mp:
+                    ln = mp[y].rstrip()
+                    if len(ln) > 0:
+                        text[i] += "\n" *brks +ln
+                        brks = 0
+                brks += 1
+        bar_title = ["write to " +file_name +" & " +file_name +".colortable"]
+        with open(file_name, "w") as f: f.write(text[0])
+        if len(text[1]) > 0:
+            with open(file_name +".colortable", "w") as f: f.write(text[1])
 
-    def load_from_file(file_name):
-        with open(file_name, "r") as f: scr.addstr(1, 1, f.read())
+    def load_from_file(file_name="save"):
+        try: 
+            with open(file_name, "r") as f: pass
+        except:
+            bar_title[0] = "ERROR: no file in working directory named '{0}'".format(file_name)
+            return
+
+        h, w = scr.getmaxyx()[0] -2, scr.getmaxyx()[1] -2
+
+        def colorize(f):
+            lines = f.read().split("\n")
+            for y in range(h):
+                txt = " " *w
+                if len(lines) > y:
+                    txt = ("{:" +str(w) +"s}").format(lines[y])[:w]
+                if y in content: content[y] = ("{:" +str(w) +"s}").format(content[y])[:w]
+                else: content[y] = " " *w
+                for x in range(w):
+                    scr.addstr(y +1, x +1, content[y][x], curses.color_pair(int(txt[x].strip() or 0)))
+                colortable[y] = txt
+
+        if file_name.lower()[-11:] == ".colortable":
+            with open(file_name, "r") as f: colorize(f)
+        else:
+            with open(file_name, "r") as f:
+                lines = f.read().split("\n")
+                for y in range(h):
+                    txt = " " *w
+                    if len(lines) > y:
+                        txt = ("{:" +str(w) +"s}").format(lines[y])[:w]
+                    scr.addstr(y +1, 1, txt)
+                    content[y] = txt
+            try:
+                with open(file_name +".colortable", "r") as f: colorize(f)
+            except: pass
+
 
     def execute(*cmd):
-        global autopush, running, bar_title, status
+        global autopush, running, bar_title, status, content, colortable
         if cmd[0] == "autopush":
             if len(cmd) > 1: autopush = cmd[1]
             else: bar_title[0] = cmd[0] +": direction (D|U|L|R|-) required"
@@ -74,6 +115,9 @@ def main(scr):
                 time.sleep(.1)
                 bar_title[0] = ""
         elif cmd[0] == "q!": running = 0
+        elif cmd[0] == "clear!":
+            content, colortable = {}, {}
+            scr.addstr(1, 1, ("\n" +" " *(scr.getmaxyx()[1] -2)) *(scr.getmaxyx()[0] -2))
         elif cmd[0] == "w" or cmd[0] == "write" or cmd[0] == "wq":
             if len(cmd) > 1: write_to_file(cmd[1])
             else: write_to_file()
@@ -129,8 +173,13 @@ def main(scr):
         elif mode == 1:
             if c > 31 and c < 127 or c == 330:
                 char = c == 330 and " " or chr(c)
-                prev = ("{:" +str(scr.getmaxyx()[1] -2) +"}").format(y in content and content[y] or "")
-                content[y] = prev[:x] +char +prev[x +1]
+                
+                byt = char
+                for i in [content, colortable]:
+                    txt = y in i and i[y] or ""
+                    prev = txt[:scr.getmaxyx()[1] -2] +(" " *(scr.getmaxyx()[1] -2 -len(txt)))
+                    i[y] = prev[:x] +byt +prev[x +1]
+                    byt = str(scheme == 0 and " " or scheme)
 
                 scr.addstr(y, x, char, curses.color_pair(scheme))
                 if c != 330:
