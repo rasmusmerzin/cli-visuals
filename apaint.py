@@ -128,6 +128,10 @@ def main(scr):
                     scr.addstr(shadow[0] +i, shadow[1], lns[i])
             except: bar_title[0] = "command error"
 
+        elif cmd[0] == "ls" or cmd[0] == "dir": bar_title[0] = "   ".join(os.popen("ls " +" ".join(cmd[1:])).read().split("\n"))
+        elif cmd[0] == "pwd": bar_title[0] = os.popen("pwd " +" ".join(cmd[1:])).read().split("\n")[0]
+        elif cmd[0] == "bat" or cmd[0] == "battery": bar_title[0] = os.popen("upower -i `upower -e | grep bat` | grep perc " +" ".join(cmd[1:])).read().split("\n")[0]
+
         elif cmd[0] == "clear!":
             content, colortable = {}, {}
             scr.addstr(0, 0, ("\n" +" " *(scr.getmaxyx()[1] -1)) *(scr.getmaxyx()[0] -1))
@@ -201,28 +205,32 @@ def main(scr):
                 for i in [content, colortable]:
                     txt = y in i and i[y] or ""
                     prev = txt[:scr.getmaxyx()[1] -2] +(" " *(scr.getmaxyx()[1] -2 -len(txt)))
-                    i[y] = prev[:x] +byt +(len(prev) > x +1 and prev[x +1] or "")
+                    i[y] = prev[:x] +byt +prev[x +1:]
                     byt = str(scheme == 0 and " " or scheme)
 
                 scr.addstr(y, x, char, curses.color_pair(scheme))
                 if c != 330:
                     y += autopush.count("d") -autopush.count("u")
                     x += autopush.count("r") -autopush.count("l")
+            elif c == 263:
+                y -= autopush.count("d") -autopush.count("u")
+                x -= autopush.count("r") -autopush.count("l")
+            elif c == 331:
+                cmdi = -1
+                cmd_log += [":autopush "]
+                mode = -1
+                bar_title = [":autopush "]
+                y, x = scr.getmaxyx()[0] -1, 10
+            else: bar_title[0] = "-- INSERT --    " +str(c)
+
         elif mode == -1:
+
             if c > 31 and c < 127:
                 bar_title[0] = bar_title[0][:x] +chr(c) +bar_title[0][x:]
                 x += 1
 
-            elif c == 261: x += x < len(bar_title[0]) and 1 or 0
-            elif c == 260: x -= x > 1 and 1 or 0
             elif c == 262: x = 1
             elif c == 360: x = len(bar_title[0])
-
-            elif c == 263:
-                if x > 1:
-                    bar_title[0] = bar_title[0][:x-1] +bar_title[0][x:]
-                    x -= 1
-            elif c == 330: bar_title[0] = bar_title[0][:x] +bar_title[0][x+1:]
 
             elif c == 258:
                 cmdi = min(-1, cmdi +1)
@@ -232,13 +240,24 @@ def main(scr):
                 cmdi = max(-len(cmd_log), cmdi -1)
                 bar_title[0] = cmd_log[cmdi]
                 x = len(cmd_log[cmdi])
+            elif c == 261: x += x < len(bar_title[0]) and 1 or 0
+            elif c == 260: x -= x > 1 and 1 or 0
+
+            elif c == 263:
+                if x > 1:
+                    bar_title[0] = bar_title[0][:x-1] +bar_title[0][x:]
+                    x -= 1
+            elif c == 330: bar_title[0] = bar_title[0][:x] +bar_title[0][x+1:]
 
             elif c == 10: #ADD: or c == <numpad_enter>
-                if len(cmd_log) > 2 and cmd_log[-2] == bar_title[0] or cmd_log[cmdi] == bar_title[0]: del cmd_log[-1]
+                if len(cmd_log) > 2 and cmd_log[-2] == bar_title[0] or cmd_log[cmdi] == bar_title[0] or bar_title[0] == ":": del cmd_log[-1]
                 else: cmd_log[-1] = bar_title[0]
-                cmd = bar_title[0][1:]
-                bar_title[0] = ">" +cmd
-                execute(*cmd.lower().split())
+                if bar_title[0] != ":":
+                    cmd = bar_title[0][1:]
+                    bar_title[0] = ">" +cmd
+                    execute(*cmd.lower().split())
+                else:
+                    bar_title[0] = ""
                 mode = 0
                 y, x = shadow[0], shadow[1]
 
