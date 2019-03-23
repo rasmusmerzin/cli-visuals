@@ -173,6 +173,7 @@ def main(scr):
             elif c == 360: x = scr.getmaxyx()[1]
 
             elif c == 9: scheme = (scheme +1) %7
+            elif c == 353: scheme = (scheme -1) %7
 
             shadow = [y, x]
 
