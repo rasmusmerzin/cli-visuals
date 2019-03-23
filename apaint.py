@@ -1,7 +1,7 @@
 
 
 import curses, traceback
-import os, time
+import os, time, sys
 
 
 lt = time.localtime(time.time())
@@ -151,6 +151,10 @@ def main(scr):
         else: bar_title[0] = "no command '{0}'".format(cmd[0])
 
     update_bar_info()
+
+
+    try: load_from_file(sys.argv[1])
+    except: pass
 
 
     while running:
