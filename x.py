@@ -1,4 +1,4 @@
-#trip
+#!/usr/bin/env python
 
 
 import os, random, time
