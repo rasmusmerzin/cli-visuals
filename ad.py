@@ -1,10 +1,50 @@
 #!/usr/bin/env python
 
 
-import os, random, time
+import os, sys, random, time
 
 
-IMG = """
+def slt(img):
+    return img.split("\n")
+
+def get_scr_size():
+    return [int(x) for x in os.popen("stty size", "r").read().split()]
+
+def get_img_size(img):
+    return [IMG.count("\n"), max([len(x) for x in slt(IMG)])]
+
+def init():
+    global scr, img
+    os.system("clear")
+    scr = get_scr_size()
+    img = get_img_size(IMG)
+
+colors = [
+    [37, 31, 33, 34, 35, 36, 32],
+    [31, 33, 34, 35, 36, 37, 30]
+]
+
+def get_color(x, y, t):
+    global colors, img
+
+    f = x -max(img) +abs(t)
+
+    off = random.randint(-4, 4)
+
+    for i in range(6, -1, -1):
+        if f > y +(i *16) +off:
+            if t >= 0:
+                return "\033[" +str(colors[1][i]) +"m"
+            elif t < 0:
+                return "\033[" +str(colors[0][i]) +"m"
+    return t <= 0 and "\033[30m" or "\033[" +str(colors[0][-1]) +"m"
+
+
+
+
+
+
+IMG = ["""
                   `,:;'''++''';:,`
               ,'++++############++++',
            :'++######################++':
@@ -32,7 +72,7 @@ IMG = """
            .;+++########+++#########+++;.
                :'+++++########+++++':
                     .,:;;;;;;:,.
-"""
+""",
 """
                        `.
                        ,:`
@@ -63,46 +103,18 @@ IMG = """
                        ,:
                        ,:
                        ,,
-"""
+"""]
 
 
-def slt(img):
-    return img.split("\n")
-
-def get_scr_size():
-    return [int(x) for x in os.popen("stty size", "r").read().split()]
-
-def get_img_size(img):
-    return [IMG.count("\n"), max([len(x) for x in slt(IMG)])]
-
-def init():
-    global scr
-    os.system("clear")
-    scr = get_scr_size()
-
-img = get_img_size(IMG)
-
-colors = [
-    [37, 31, 33, 34, 35, 36, 32],
-    [31, 33, 34, 35, 36, 37, 30]
-]
 
 
-def get_color(x, y, t):
-    global colors
 
-    f = x -max(img) +abs(t)
 
-    off = random.randint(-4, 4)
 
-    for i in range(6, -1, -1):
-        if f > y +(i *16) +off:
-            if t >= 0:
-                return "\033[" +str(colors[1][i]) +"m"
-            elif t < 0:
-                return "\033[" +str(colors[0][i]) +"m"
-    return t <= 0 and "\033[30m" or "\033[" +str(colors[0][-1]) +"m"
-
+try: IMG = IMG[int(sys.argv[0])]
+except:
+    try: IMG = IMG[int(sys.argv[1])]
+    except: IMG = IMG[0]
 
 init()
 
