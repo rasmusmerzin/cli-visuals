@@ -74,6 +74,35 @@ IMG = ["""
                     .,:;;;;;;:,.
 """,
 """
+                        ..
+                        dd`
+                       sMMy
+                      /MMMMo
+                     -NMMMMM/
+                    `mMMMMMMN-
+                   `dMMMMMMMMN.
+                   yMMMMMMMMMMm`
+                  `-hMMMMMMMMMMd`
+                 oMh+/hMMMMMMMMMh`
+                +MMMMMdymMMMMMMMMh
+               +MMMMMMMMMMMMMMMMMMy
+              +MMMMMMMMMMMMMMMMMMMMy
+             +MMMMMMMMMMMMMMMMMMMMMMy
+            +MMMMMMMMMMMMMMMMMMMMMMMMy
+           +MMMMMMMMMMMmhhmMMMMMMMMMMMy
+          oMMMMMMMMMMh-    .yMMMMMMMMMMy
+         oMMMMMMMMMMs        +MMMMMMMMMMh
+        sMMMMMMMMMMm          hMMMMMMMMMMh`
+       sMMMMMMMMMMMo          :MMMMMMNddNMh`
+      yMMMMMMMMMMMM/          .MMMMMMMMNs///
+     yMMMMMMMMMMMMMo          :MMMMMMMMMMMmo`
+   `hMMMMMMMMMNhs+:.          `:+shNMMMMMMMMNy`
+  `hMMMMMNho:`                      `:ohNMMMMMd`
+ `dMMNh+-                                -+hNMMm.
+`mdo:                                        :odm.
+:.                                              .:
+""",
+"""
                                          . `
                                         :+/-
                                        /yy:/oo.   .::::-.
