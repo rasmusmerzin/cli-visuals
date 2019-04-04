@@ -29,7 +29,7 @@ def get_color(x, y, t):
 
     f = x -max(img) +abs(t)
 
-    off = random.randint(-4, 4)
+    off = random.randint(0, 16)
 
     for i in range(6, -1, -1):
         if f > y +(i *16) +off:
@@ -72,6 +72,37 @@ IMG = ["""
            .;+++########+++#########+++;.
                :'+++++########+++++':
                     .,:;;;;;;:,.
+""",
+"""
+                                         . `
+                                        :+/-
+                                       /yy:/oo.   .::::-.
+                      `N/`-           `hMMo:   .yNMMMMMMMNy`
+                       -d:o//        `dd.     /MMMMMMMMMMMM-
+                        `yy+./+      .hdhs/.-yMMMMMMMMMMMd-
+                     oh//NMo.`     .:+osyMMMMMMMMMMMMMMd/
+                         so    .ohNMMMMMMMMMMMNooyddho-
+                         m.  .hMMMMMMMMMMMMdmM-
+                         Nh+yMMMMMMmdddmds- oN
+                         NMMMMMMMy`         +Ns.`/y/-
+                       .yMMMMMMMM/           `:smd++o+
+                     :hMMMMMNdhydm/   :+        `o//`
+                   :dMMMMmy/`    `omyhh+os`        ::
+                 `yMMMNs-          .msy:.
+                 hMMm+`            .h y.+s`
+                +MMy`             /d: om-`
+                mMh                   `oh
+               -MM.
+               +MN
+               sMd
+               dMs
+              -MN.
+             .mN:
+           `oNh.
+         -sNd:
+     `:sdho.
+ `:+oo/.
+`-`
 """,
 """
                        `.
@@ -119,7 +150,7 @@ except:
 init()
 
 frames = img[0] *6
-step = 2
+step = 6
 
 while 1:
     for t in (list(range(-frames, step, step)) +list(range(frames, 0, -step))):
@@ -131,9 +162,10 @@ while 1:
         if t == 0:
             colors[0].append(colors[0].pop(random.randint(1, 3)))
             init()
+            time.sleep(.3)
 
         time.sleep(.04)
-    time.sleep(.5)
+    time.sleep(1)
 
 
 
