@@ -142,10 +142,8 @@ IMG = ["""
 
 
 
-try: IMG = IMG[int(sys.argv[0])]
-except:
-    try: IMG = IMG[int(sys.argv[1])]
-    except: IMG = IMG[0]
+try: IMG = IMG[int(sys.argv[1])]
+except: IMG = IMG[0]
 
 init()
 
