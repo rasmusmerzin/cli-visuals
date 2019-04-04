@@ -89,9 +89,6 @@ def get_color(x, y, t):
 
     f = x -max(img) +abs(t)
 
-    if t == 0:
-        colors[0].append(colors[0].pop(random.randint(1, 3)))
-
     off = random.randint(-4, 4)
 
     for i in range(6, -1, -1):
@@ -114,6 +111,10 @@ while 1:
 
         for y in range(img[0]):
             print((" " *int((scr[1] -img[1])/ 2)) +"".join([(get_color(x, y, t) +slt(IMG)[y][x] +"\033[0m") for x in range(len(slt(IMG)[y]))]))
+
+        if t == 0:
+            colors[0].append(colors[0].pop(random.randint(1, 3)))
+            os.system("clear")
 
         time.sleep(.04)
     time.sleep(.5)
