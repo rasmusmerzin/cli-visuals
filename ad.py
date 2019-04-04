@@ -75,7 +75,11 @@ def get_scr_size():
 def get_img_size(img):
     return [IMG.count("\n"), max([len(x) for x in slt(IMG)])]
 
-scr = get_scr_size()
+def init():
+    global scr
+    os.system("clear")
+    scr = get_scr_size()
+
 img = get_img_size(IMG)
 
 colors = [
@@ -100,7 +104,7 @@ def get_color(x, y, t):
     return t <= 0 and "\033[30m" or "\033[" +str(colors[0][-1]) +"m"
 
 
-os.system("clear")
+init()
 
 frames = img[0] *6
 step = 2
@@ -114,7 +118,7 @@ while 1:
 
         if t == 0:
             colors[0].append(colors[0].pop(random.randint(1, 3)))
-            os.system("clear")
+            init()
 
         time.sleep(.04)
     time.sleep(.5)
