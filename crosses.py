@@ -7,7 +7,7 @@ import os, random, time, sys, signal
 os.system("tput civis")
 def exit(sig, frame):
     os.system("clear")
-    os.system("tput cvvis")
+    os.system("tput cnorm")
     sys.exit(0)
 
 
