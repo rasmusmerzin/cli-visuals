@@ -1,7 +1,15 @@
 #!/usr/bin/env python
 
 
-import os, sys, random, time
+import os, sys, random, time, signal
+
+
+def exit(sig, frame):
+    os.system("clear")
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, exit)
+
 
 
 def slt(st):

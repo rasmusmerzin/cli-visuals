@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 
 
-import os, random, time
+import os, random, time, sys, signal
+
+
+def exit(sig, frame):
+    os.system("clear")
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, exit)
 
 
 def get_screen_size():
