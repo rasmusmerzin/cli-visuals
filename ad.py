@@ -4,14 +4,14 @@
 import os, sys, random, time
 
 
-def slt(img):
-    return img.split("\n")
+def slt(st):
+    return st.split("\n")
 
 def get_scr_size():
     return [int(x) for x in os.popen("stty size", "r").read().split()]
 
-def get_img_size(img):
-    return [IMG.count("\n"), max([len(x) for x in slt(IMG)])]
+def get_img_size(st):
+    return [st.count("\n"), max([len(x) for x in slt(st)])]
 
 def init():
     global scr, img
