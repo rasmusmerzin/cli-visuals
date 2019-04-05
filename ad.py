@@ -4,8 +4,10 @@
 import os, sys, random, time, signal
 
 
+os.system("tput civis")
 def exit(sig, frame):
     os.system("clear")
+    os.system("tput cvvis")
     sys.exit(0)
 
 signal.signal(signal.SIGINT, exit)
