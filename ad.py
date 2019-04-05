@@ -174,7 +174,7 @@ IMG = ["""
 try: IMG = IMG[int(sys.argv[1])]
 except:
     try:
-        with open(sys.argv[1] as f: IMG = f.read()
+        with open(sys.argv[1]) as f: IMG = f.read()
     except: IMG = IMG[0]
 
 init()
