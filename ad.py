@@ -88,7 +88,7 @@ IMG = ["""
 
 
 try:
-    with open("ads") as f: IMG = f.read().split("::seperator::")
+    with open("ads") as f: IMG += f.read().split("::seperator::")
     IMG = IMG[int(sys.argv[1])]
 except:
     try:
