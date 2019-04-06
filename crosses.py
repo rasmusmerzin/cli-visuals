@@ -4,12 +4,11 @@
 import os, random, time, sys, signal
 
 
-os.system("tput civis")
+print("\033[?25l")
 def exit(sig, frame):
+    print("\033[?25h")
     os.system("clear")
-    os.system("tput cnorm")
     sys.exit(0)
-
 
 signal.signal(signal.SIGINT, exit)
 
