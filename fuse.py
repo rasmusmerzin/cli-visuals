@@ -62,11 +62,18 @@ def dot(y, x, r, c=37):
 
 def cleanup():
     length = 8000
+    spark = "%%%/!.^'"
     for i in range(len(trail) -1, length, -1):
-        if random.randint(0, 1) == 0:
-            if trail[:length].count(trail[i]) == 0:
-                print("\033[" +str(trail[i][0]) +";" +str(trail[i][1]) +"H ")
-            trail.pop(i)
+        if i > length +100:
+            if random.randint(0, 1) == 0:
+                if trail[:length].count(trail[i]) == 0:
+                    print("\033[" +str(trail[i][0]) +";" +str(trail[i][1]) +"H ")
+                trail.pop(i)
+        else:
+            if random.randint(0, 10) == 0:
+                if trail[:length].count(trail[i]) == 0:
+                    print("\033[" +str(trail[i][0]) +";" +str(trail[i][1]) +"H" +spark[random.randint(0, len(spark) -1)])
+
 
 
 
@@ -75,6 +82,8 @@ init()
 pos = [int(scr[0] /2), int(scr[1] /2)]
 ang = 0
 c = random.randint(0, 5)
+
+cu = len(sys.argv) > 1 and 1 or 0
 
 while 1:
     c = (c +1) %6
@@ -88,4 +97,4 @@ while 1:
 
             dot(pos[0], pos[1], 5, c)
 
-            cleanup()
+            if cu: cleanup()
