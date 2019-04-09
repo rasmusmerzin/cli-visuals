@@ -4,7 +4,6 @@
 import os, random, time, sys, signal
 
 
-print("\033[?25l")
 def exit(sig, frame):
     print("\033[?25h")
     os.system("clear")
@@ -42,6 +41,14 @@ for i in sys.argv[1:]:
     elif i[:8] == "--tailsize=":
         try: tailsize = int(i[11:])
         except: pass
+    elif i == "-h" or i == "--help" or i == "--usage":
+        print("fuse.py [OPTIONS]")
+        print("\n".join([
+            "-e=<erase (0/1)>   default: " +str(erase),
+            "-t=<tailsize>      default: " +str(tailsize),
+        ]))
+        sys.exit(0)
+print("\033[?25l")
 
 
 def draw_line():

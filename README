@@ -11,12 +11,12 @@ $ git clone https://github.com/rasmusmerzin/cli-visuals.git
 
 USAGE (bash)
 $ cd <path/to/directory>
-$ python3 <file_name>
+$ python3 <file_name> [OPTIONS]
 or
-$ ./<file_name>
+$ ./<file_name> [OPTIONS]
 
 USAGE (cmd.exe)
 $ cd <path\to\directory>
-$ py <file_name>
+$ py <file_name> [OPTIONS]
 or
-$ <file_name>
+$ <file_name> [OPTIONS]
