@@ -86,6 +86,29 @@
  `:+oo/.
 `-`
 ::seperator::
+`/ydhhoy//o+:/+oooooooo+//+/---//sso/hhhy/`     
+ .ohysh+-`..```..-../osso:--..``.----`:o+/+`     
+ .+o/:.`       ````-ymmNNd-``````````  `-`-`     
+ .:/`   .-:-.`  ```/hdmddds:.```.-/+/-.`` ``     
+ `. ` `-syhy+-`  `.syss+h+/s/-`./sssss:`. ..     
+  -` `--+oooo+` `.shs+hmmmdddy:.`.-:::-.:`..     
+ `:-` -.----.``-/sy++dddmmmdddhs/.```.-::-..`    
+ `/o---.-....:osyysyhhhhyssyhdhdddso+++:::--.    
+ `+os+::+//++oyhhyosyhyo+/:-+syydmmhhysyyos/.    
+  :+o+//+/shhddddy+yyy+:--- `-+shdmmmmdddyho-    
+  `/o++syyhdmddhyoyyo-  :+s:`/++ssydmmmmdhs:`    
+   `--/yhddddds---/-..-:++o+ohhso+/symmmhs-      
+      .oyhhdhs::://--.---://++osyo+/oshh:/-`     
+       -+yyhyo:-/+osyhdhsshddddddyy++sss..-`     
+      `./oyyo:.:/+syyhddhhdddhhsyyys//ss/-:`     
+      .:/.os/..//oyhdddddddhs:``./ss+/oo/+:`     
+       -:.os:.-:+syhhhyyys/-`    `./o+ss:o:`     
+       .-:++/-::ooo/:---.  .-``   `.+oos+++`     
+       .--+++-:++-`     ./`/s-+o- `./+oso//`     
+       .--+/+::o:`   `--:/--:--:....//+++--`     
+        .:///://-`  .:..-``-:-:+:/::/+oo:---`    
+        .-::/-:.-..  ``.-. .-..` `::/+os::+/-..`
+::seperator::
                                  ``````````.--..``                                          
                          ``.-:/osyyyyyyyyyyyyyyyso+:.`                                      
                      `:oyhdddmmmmmmmmmmmmmmdddddddhhhy+-`                                   
